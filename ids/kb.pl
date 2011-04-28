@@ -1,4 +1,4 @@
-
+/* KB DEFINITIVA */
 
 
 /* connessione tcp */
@@ -51,8 +51,11 @@
 
 */
 
-% pacchetto(25,25,syn,host1,host2,10,0).
-% pacchetto(25,25,syn,host2,host1,11,20).
+pacchetto(51283,22,syn,host2,host1,0,0).
+pacchetto(22,51283,syn,host1,host2,0,1).
+
+pacchetto(51285,80,syn,host2,host1,0,0).
+pacchetto(80,51285,syn,host1,host2,0,1).
 
 
 
@@ -69,7 +72,7 @@
 
 
 connessione_tcp(SOURCE,DESTINATION,SD,DP):-
-	pacchetto(SD,DP,syn,SOURCE,DESTINATION,X,0),pacchetto(DP,SD,syn,DESTINATION,SOURCE,Y,_),Y is X+1.
+	pacchetto(SD,DP,syn,SOURCE,DESTINATION,X,0),pacchetto(DP,SD,syn,DESTINATION,SOURCE,_,Y),Y is X+1.
 
 
 % connessione_tcp(host1,host2,25,25).
@@ -81,8 +84,8 @@ connessione_tcp(SOURCE,DESTINATION,SD,DP):-
 
 /*aggiungere connessioni*/
 tcp_scan(SOURCE,DESTINATION):-
-	connessione_tcp(SOURCE,DESTINATION,A,A),connessione_tcp(SOURCE,DESTINATION,B,B)
-	,A \== B,A \== C,B \== C.
+	connessione_tcp(SOURCE,DESTINATION,A,B),connessione_tcp(SOURCE,DESTINATION,C,D)
+	,A \== B,A \== C,A \== D,B \== C,B \== D.
 
 main:-
 	
