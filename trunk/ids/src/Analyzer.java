@@ -1,20 +1,14 @@
-package ids;
-
 import java.util.Hashtable;
 import java.util.Vector;
 import jpcap.packet.Packet;
 import jpcap.packet.TCPPacket;
-import jpl.Atom;
-import jpl.Compound;
-import jpl.Integer;
-import jpl.Query;
-import jpl.Term;
-import jpl.Variable;
+import alice.tuprolog.*;
+import alice.tuprolog.Long;
 
-
-public class Analyzer extends Thread{
+public class Analyzer extends Thread{ 
 	
 	private Blackboard blackboard;
+	private Prolog engine;
 	/* numero pacchetti da leggere */
 	//private int n;
 	/*lista ip diversi da ip host per cui fare inferenza*/
@@ -23,7 +17,7 @@ public class Analyzer extends Thread{
 	
 	//Analyzer(int n) { this.n = n; }
 	
-	Analyzer() {}
+	Analyzer(Prolog e) {this.engine = e;}
 	
 	public void assertPacket(Packet p){
 		
@@ -31,66 +25,57 @@ public class Analyzer extends Thread{
 		
 		TCPPacket tcp_packet = (TCPPacket)p;
 		//System.out.println(tcp_packet);
-		Term t1 = new jpl.Integer(tcp_packet.src_port);
-	    Term t2 = new jpl.Integer(tcp_packet.dst_port);
+		Term t1 = new Int(tcp_packet.src_port);
+	    Term t2 = new Int(tcp_packet.dst_port);
 	    Term t3 = null;
-	    Integer t7 = null;
+	    Long t7 = null;
 	    if (tcp_packet.syn)
-	    	t3 = new Atom("syn");
+	    	t3 = new Struct("syn");
 	    
 	    if(tcp_packet.rst){
-	    	t3 = new Atom("rst");
+	    	t3 = new Struct("rst");
 	    
 	    }
-	    Term t4 = new Atom(tcp_packet.src_ip.toString());
+	    Term t4 = new Struct(tcp_packet.src_ip.toString());
 		
-	    Term t5 = new Atom(tcp_packet.dst_ip.toString());
+	    Term t5 = new Struct(tcp_packet.dst_ip.toString());
 	    
-		Long l_t6 = new Long(tcp_packet.sequence);
-	    Integer t6 = new Integer(l_t6);
+		Long t6 = new Long(tcp_packet.sequence);
+	    //Long t6 = new Long(l_t6); already defined on 2p
 	    
 	    
 	    if(tcp_packet.ack){
-	    	Long l = new Long(tcp_packet.ack_num);
-	    	t7 = new Integer(l);
-	    
+	    	t7 = new Long(tcp_packet.ack_num);
+	    	//t7 = new Integer(l);
 	    }
 	      
 	    else
-	    	t7 = new Integer(0);
+	    	t7 = new Long(0);
+	    
+	    Term[] arg_t;
 	    
 	    if (t3 != null){
-	    	Term arg_t[] = { t1,t2,t3,t4,t5,t6,t7 };
-	    	Term pair = new Compound( "pacchetto", arg_t );
-	    	System.out.println(pair);
-	    
-	    	Query assert_query = 
-		         new Query( 
-		                   "assert", 
-		                   pair );
-		     
-		     //System.out.println("asserisco");
-	    	assert_query.oneSolution();
+	    	Term[] arg_temp = { t1,t2,t3,t4,t5,t6,t7 };
+		    arg_t = arg_temp;
 	    }
 	    else{
-	    	Term arg_t[] = { t1,t2,t4,t5,t6,t7};
-	    	Term pair = new Compound( "pacchetto", arg_t );
-	    	System.out.println(pair);
-	    	Query assert_query = 
-		         new Query( 
-		                   "assert", 
-		                   pair );
-		     
-		     //System.out.println("asserisco");
-	    	assert_query.oneSolution();
+		   	Term[] arg_temp = { t1,t2,t4,t5,t6,t7 };
+		    arg_t = arg_temp;
 	    }
 	    
-	    
-	    
-	    
+    	Term pair = new Struct( "pacchetto", arg_t );
+    	System.out.println(pair);
+
+    	Term assert_query = new Struct("assert",pair );
+	     
+	     //System.out.println("asserisco");
+    	try{
+    	SolveInfo solve = engine.solve(assert_query);
+    	Term solution = solve.getSolution();
+    	}
+    	catch(Exception e){}
+    	
 		}
-	
-		
 	}
 	
 
@@ -99,13 +84,13 @@ public class Analyzer extends Thread{
 		Term args2[] = { 
 				//new Atom("/192.168.0.5"),
 				//new Atom("/192.168.0.4"),
-				new Variable("X"),
-				new Variable("Y"),
+				new Var("X"),
+				new Var("Y"),
 				//new Variable("W"),
 				//new Variable("Z"),
 			};
-			Query query = 
-				new Query(
+			Term query = 
+				new Struct(
 					//"porta_chiusa",
 					"tcp_scan",
 					//	"connessione_tcp",
@@ -113,8 +98,14 @@ public class Analyzer extends Thread{
 					args2 
 					);
 			
-						
-			if(query.hasSolution()){
+	    	try{
+	        	SolveInfo solve = engine.solve(query);
+	        	Term solution = solve.getSolution();
+	        	}
+	        catch(Exception e){}
+			
+			
+/*			if(query.hasSolution()){
 				System.out.println(query.oneSolution());
 				System.out.println("scanning rilevato!");
 			    System.exit(1);

@@ -1,5 +1,3 @@
-package ids;
-
 import jpcap.packet.Packet;
 import java.util.Vector;
 
