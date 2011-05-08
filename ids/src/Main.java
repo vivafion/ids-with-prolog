@@ -1,19 +1,13 @@
-package ids;
-
-import jpcap.NetworkInterface;
-import jpl.Atom;
-import jpl.JPL;
-import jpl.Query;
-import jpl.Term;
-
+import java.io.FileInputStream;
+import alice.tuprolog.*;
 
 public class Main {
 
 
 	/* inizializza ambiente JPL */
-	public static void init(){
+	public static void init(Prolog engine){
 		
-		JPL.init();
+/*		JPL.init();
 
 		Term consult_arg[] = { 
 				new Atom( "kb.pl" ) 
@@ -30,19 +24,28 @@ public class Main {
 				System.err.println( "Consult failed" );
 				System.exit( 1 );
 			}
-
+*/
+	
+		//Prolog engine = new Prolog();
 		
+		try { 
+			Theory kb = new Theory(new FileInputStream("kb.pl")); 
+			engine.setTheory(kb);
+		}
+		catch (Exception e) {}
+		finally {}
 	}
 	
 	
 	public static void main(String[] args) {
 
+		Prolog engine = new Prolog();
 			
-		Analyzer analyzer = new Analyzer();
+		Analyzer analyzer = new Analyzer(engine);
 		
 		Sniffer sniffer = new Sniffer();
 		
-		init();
+		init(engine);
 		/* non serve +
 		Blackboard blackBoard = new Blackboard(); 
 		analyzer.setBlackboard(blackBoard);

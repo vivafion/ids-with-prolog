@@ -1,15 +1,9 @@
-package ids;
-
 import java.io.IOException;
 
 import jpcap.*;
 import jpcap.packet.Packet;
 
 import jpcap.PacketReceiver;
-/*import jp.ac.kobe_u.cs.prolog.lang.*;*/
-
-
-
 
 class Sniffer implements PacketReceiver{
 	
