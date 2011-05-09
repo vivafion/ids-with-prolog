@@ -1,4 +1,13 @@
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+
+import java.io.IOException;
 import java.util.Hashtable;
+import java.util.Scanner;
 import java.util.Vector;
 import jpcap.packet.Packet;
 import jpcap.packet.TCPPacket;
@@ -64,21 +73,71 @@ public class Analyzer extends Thread{
 	    }
 	    
     	Term pair = new Struct( "pacchetto", arg_t );
-    	System.out.println(pair);
+    	//System.out.println(pair);
 
     	Term assert_query = new Struct("assert",pair );
 	     
-	     //System.out.println("asserisco");
+	    System.out.println(assert_query);
     	try{
     	SolveInfo solve = engine.solve(assert_query);
     	Term solution = solve.getSolution();
+    	System.out.println(solution);
     	}
     	catch(Exception e){}
     	
 		}
 	}
 	
+	public String fromFileToString(String file){
+		
+		 StringBuilder stringBuilder = new StringBuilder();
+	    Scanner scanner;
+		try {
+			scanner = new Scanner(new File(file));
+			
+			try {
+				
+		        while(scanner.hasNextLine()) {
+		        	 stringBuilder.append(scanner.nextLine() + "\n");
+		        }
+		    } finally {
+		        scanner.close();
+		    }
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		}
 
+
+	    return stringBuilder.toString();
+
+		
+	}
+	
+	
+
+	/* legge da file kb.pl e crea stringa e aggiunge la regola con n premesse */
+	
+	public void initializeKB(String file,int n){
+		 	
+		String theory = fromFileToString(file);
+		/* AGGIUNGERE REGOLA PARAMETRICA */
+		try { 
+			Theory kb = new Theory(theory); 
+			engine.setTheory(kb);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			
+			
+		}
+		finally {}
+		
+		
+		
+	}
+	
+	
 	public void query(){
 		System.out.println("eseguo query");
 		Term args2[] = { 
@@ -99,10 +158,16 @@ public class Analyzer extends Thread{
 					);
 			
 	    	try{
+	    		System.out.println("query " + query);
 	        	SolveInfo solve = engine.solve(query);
 	        	Term solution = solve.getSolution();
+	        	System.out.println("solution " + solution);
 	        	}
-	        catch(Exception e){}
+	        catch(Exception e){
+	        	e.printStackTrace();
+	        	
+	        	
+	        }
 			
 			
 /*			if(query.hasSolution()){

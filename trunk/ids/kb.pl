@@ -18,20 +18,8 @@
 /* pacchetto(source_port,dest_port,flag,source_ip,dest_ip,seq,ack)*/
 /* pacchetto(source_port,dest_port,flag,source_ip,dest_ip,seq,ack,rst)*/
 
-:- dynamic pacchetto/7.
-:- dynamic pacchetto/6.
 
-
-
-
-
-
-
-
-
-
-
-
+%:-dynamic pacchetto(6).
 
 
 % pacchetto(25,25,syn,host1,host2,10,0).
@@ -53,7 +41,8 @@
 
 
 
-:- dynamic connessione_tcp/4.
+
+
 
 connessione_tcp(SOURCE,DESTINATION,SD,DP):-
 	pacchetto(SD,DP,syn,SOURCE,DESTINATION,X,0)% syn, seq = x
@@ -67,7 +56,7 @@ porta_chiusa(SOURCE,DESTINATION,SD,DP):-
 	pacchetto(SD,DP,syn,SOURCE,DESTINATION,X,0)% syn, seq = x
 	%,pacchetto(DP,SD,syn,DESTINATION,SOURCE,Y,Z)%seq = y,ack= x + 1,
 	,pacchetto(DP,SP,rst,DESTINATION,SOURCE,0,Z)%seq = x + 1,ack = y + 1
-	,Z is X+1.%,W is Y+1.
+	,Z is X+1.%W is Y+1.
 	
 
 /*aggiungere connessioni*/

@@ -37,21 +37,14 @@ class Sniffer implements PacketReceiver{
 public void readFile(String file){
 	
 	try {
-		
+		System.out.println("leggo pacchetti");
 		JpcapCaptor jpcap = JpcapCaptor.openFile(file);
-		jpcap.processPacket(-1, this);
 		int n = jpcap.received_packets;
-		System.out.println("pacchetti ricevuti" + n);
+		System.out.println("pacchetti ricevuti " + n);
+		jpcap.processPacket(-1, this);
+		analyzer.query();
 		
-		while(n > 0){
-			Packet packet = jpcap.getPacket(); 
-			/* asserisce pacchetto come fatto */
-			analyzer.assertPacket(packet);
-			/* esegue query tcp_scan(X,Y) */
-			analyzer.query();
-			n--;
-		}
-				
+		
 	} catch (IOException e) {
 		e.printStackTrace();
 	}
@@ -68,7 +61,7 @@ public void receivePacket(Packet packet) {
 	/* asserisce pacchetto come fatto */
 	analyzer.assertPacket(packet);
 	/* esegue query tcp_scan(X,Y) */
-	analyzer.query();
+	//analyzer.query();
 		
 	
 }
