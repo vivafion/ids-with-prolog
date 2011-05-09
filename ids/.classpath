@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="jpcap"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry exported="true" kind="lib" path="D:/IA/ids/2p/2p.jar"/>
+	<classpathentry kind="lib" path="2p/2p.jar"/>
+	<classpathentry kind="lib" path="/home/p1mps/ids-with-prolog/ids/jpcap.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

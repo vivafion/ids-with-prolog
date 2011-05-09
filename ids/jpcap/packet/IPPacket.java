@@ -1,4 +1,4 @@
-package jpcap.packet;
+package packet;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;

@@ -1,4 +1,4 @@
-package jpcap.packet;
+package packet;
 
 import jpcap.JpcapCaptor;
 

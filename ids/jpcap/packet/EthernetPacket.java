@@ -1,4 +1,4 @@
-package jpcap.packet;
+package packet;
 
 /** This class represents Ethernet packet. */
 public class EthernetPacket extends DatalinkPacket

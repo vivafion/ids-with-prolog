@@ -1,4 +1,4 @@
-package jpcap.packet;
+package packet;
 
 /** This class represents TCP packet. */
 public class TCPPacket extends IPPacket

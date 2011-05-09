@@ -29,10 +29,14 @@ public class Main {
 		//Prolog engine = new Prolog();
 		
 		try { 
-			Theory kb = new Theory(new FileInputStream("kb.pl")); 
+			Theory kb = new Theory(new FileInputStream("/home/p1mps/ids-with-prolog/ids/kb.pl")); 
 			engine.setTheory(kb);
 		}
-		catch (Exception e) {}
+		catch (Exception e) {
+			e.printStackTrace();
+			
+			
+		}
 		finally {}
 	}
 	
@@ -60,11 +64,13 @@ public class Main {
 		*/
 		
 		/* legge file pacchetti catturati */
-		System.out.println("leggo pacchetti");
+		
+		//sniffer.readFile("/home/p1mps/ids-with-prolog/ids/true_scan.pcap");
+		//analyzer.query();
+		//analyzer.initializeKB("/home/p1mps/ids-with-prolog/ids/true_scan.pcap",10);
+		analyzer.initializeKB("/home/p1mps/ids-with-prolog/ids/kb.pl",10);
 		sniffer.readFile("/home/p1mps/ids-with-prolog/ids/true_scan.pcap");
-		
-		
-		
+		analyzer.query();
 	}
 
 }

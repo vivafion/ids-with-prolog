@@ -1,4 +1,4 @@
-package jpcap.packet;
+package packet;
 
 /** This class represents UDP packet. */
 public class UDPPacket extends IPPacket
