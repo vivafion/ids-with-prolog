@@ -69,8 +69,9 @@ public class Main {
 		//analyzer.query();
 		//analyzer.initializeKB("/home/p1mps/ids-with-prolog/ids/true_scan.pcap",10);
 		analyzer.initializeKB("/home/p1mps/ids-with-prolog/ids/kb.pl",10);
-		sniffer.readFile("/home/p1mps/ids-with-prolog/ids/true_scan.pcap");
-		analyzer.query();
+		//sniffer.readFile("/home/p1mps/ids-with-prolog/ids/true_scan.pcap");
+		sniffer.start();
+		//analyzer.query();
 	}
 
 }

@@ -61,7 +61,7 @@ public void receivePacket(Packet packet) {
 	/* asserisce pacchetto come fatto */
 	analyzer.assertPacket(packet);
 	/* esegue query tcp_scan(X,Y) */
-	//analyzer.query();
+	analyzer.query();
 		
 	
 }
