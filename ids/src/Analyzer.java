@@ -88,31 +88,25 @@ public class Analyzer extends Thread{
 		}
 	}
 	
-	public String fromFileToString(String file){
+	
+	public Theory createRuleTcpScan(int n){
 		
-		 StringBuilder stringBuilder = new StringBuilder();
-	    Scanner scanner;
 		try {
-			scanner = new Scanner(new File(file));
-			
-			try {
-				
-		        while(scanner.hasNextLine()) {
-		        	 stringBuilder.append(scanner.nextLine() + "\n");
-		        }
-		    } finally {
-		        scanner.close();
-		    }
-		} catch (FileNotFoundException e) {
-			
-			e.printStackTrace();
+			Theory rule = new Theory("tcp_scan(SOURCE,DESTINATION):-connessione_tcp(SOURCE,DESTINATION,A,B),connessione_tcp(SOURCE,DESTINATION,C,D),connessione_tcp(SOURCE,DESTINATION,E,F)," +
+					"A \\== B,A \\== C,A \\== D,B \\== C,C \\== E, A \\== E,B \\== F.");
+			System.out.println(rule);
+			return rule;
+		} catch (InvalidTheoryException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
 		}
-
-
-	    return stringBuilder.toString();
-
+		
+		return null;
+		
+		
 		
 	}
+	
 	
 	
 
@@ -120,15 +114,17 @@ public class Analyzer extends Thread{
 	
 	public void initializeKB(String file,int n){
 		 	
-		String theory = fromFileToString(file);
-		/* AGGIUNGERE REGOLA PARAMETRICA */
+		
 		try { 
-			Theory kb = new Theory(theory); 
+			Theory kb = new Theory(new FileInputStream(file));
+			Theory dynamic_rule = createRuleTcpScan(n);
+			kb.append(dynamic_rule);
 			engine.setTheory(kb);
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			
+	
 			
 		}
 		finally {}
@@ -162,9 +158,10 @@ public class Analyzer extends Thread{
 	        	SolveInfo solve = engine.solve(query);
 	        	Term solution = solve.getSolution();
 	        	System.out.println("solution " + solution);
+	        	System.exit(0);
 	        	}
 	        catch(Exception e){
-	        	e.printStackTrace();
+	        	//e.printStackTrace();
 	        	
 	        	
 	        }

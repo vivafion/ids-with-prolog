@@ -60,14 +60,6 @@ porta_chiusa(SOURCE,DESTINATION,SD,DP):-
 	
 
 /*aggiungere connessioni*/
-tcp_scan(SOURCE,DESTINATION):-
-	connessione_tcp(SOURCE,DESTINATION,A,B),connessione_tcp(SOURCE,DESTINATION,C,D),connessione_tcp(SOURCE,DESTINATION,E,F)
- 	,A \== B,A \== C,A \== D,B \== C,C \== E, A \== E,B \== F.
-
-
-tcp_scan(SOURCE,DESTINATION):-
-	porta_chiusa(SOURCE,DESTINATION,A,B),porta_chiusa(SOURCE,DESTINATION,C,D),porta_chiusa(SOURCE,DESTINATION,E,F)
-	,A \== B,A \== C,A \== D,B \== C,B \== D,C \== E, D \==F,A \== E,B \== F.
 
 main:-
 	
