@@ -22,11 +22,6 @@ public class RetractTimer {
 
 	}	
 	private long delay = 0;
-	private long period = 0;
-	
-
-	
-
 	
 	private Analyzer analyzer;
 	

@@ -46,6 +46,12 @@ public class Main {
 	
 	
 	public static void main(String[] args) {
+		
+		if(args.length <= 2){
+			System.out.println("Usage: kb.pl n_connections file.pcap|sniffer");
+			System.exit(0);
+		}
+		
 
 		Prolog engine = new Prolog();
 			
@@ -59,7 +65,7 @@ public class Main {
 		analyzer.setBlackboard(blackBoard);
 		sniffer.setBlackboard(blackBoard);
 		*/
-		sniffer.setAnalyzer(analyzer);
+		//sniffer.setAnalyzer(analyzer);
 		
 		/* cattura pacchettti "live" */
 		/*
@@ -72,15 +78,16 @@ public class Main {
 		//sniffer.readFile("/home/p1mps/ids-with-prolog/ids/true_scan.pcap");
 		//analyzer.query();
 		//analyzer.initializeKB("/home/p1mps/ids-with-prolog/ids/true_scan.pcap",10);
-		analyzer.initializeKB("/home/p1mps/ids-with-prolog/ids/kb.pl",10);
+		analyzer.initializeKB(args[0],Integer.parseInt(args[1]));
 		//sniffer.readFile("/home/p1mps/ids-with-prolog/ids/true_scan.pcap");
-		RetractTimer timer = new RetractTimer(10,analyzer);
+		//RetractTimer timer = new RetractTimer(10,analyzer);
 		
 
 		
-
-		sniffer.start();
-		
+		if(args[2].equals("sniffer"))
+			sniffer.start();
+		else
+			sniffer.readFile(args[2]);
 		
 		
 		//analyzer.query();
