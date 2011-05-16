@@ -110,12 +110,65 @@ public class Analyzer extends Thread{
 	}
 	
 	
+	public String createStringTcpScan(Integer n){
+		
+		String t1 = "tcp_scan(X,Y):- ";
+		String t2 = "";
+		String t3 = "";
+		String n1 = "";
+		String n2 = "";
+		Integer n_less_1 = new Integer(n-1);
+		for (int i=0; i < n;i+=2){
+			  n1 = "A"+(i);
+			  n2 = "A"+(i+1);
+			  Integer i_integer = new Integer(i);
+			  
+			  //System.out.println(i_integer +","+i);
+			  t2 = "connessione_tcp(X,Y,"+n1+","+n2+"),";
+			  t3 += t2;
+			  
+			  for (int j=i; j < n;j++){
+				  n1 = "A"+(i);
+				  n2 = "A"+(j+1);
+				  
+				  t3 += n1+"=\\"+n2;
+
+				  if(i_integer.equals(n_less_1)){
+					  
+					  t3 += ".";
+				  }
+				  else
+					  t3 += ",";
+				    
+			  }
+			  
+			  
+			  
+			  
+			  System.out.println("t3 costruita " + t3);
+			  
+		} 
+		
+		
+		//System.out.println("regola generata" + t3);
+		t1 += t3;
+		return t1;
+		
+		
+		
+	}
+	
+	
+	
 	public Theory createRuleTcpScan(int n){
 		
 		try {
 			Theory rule = new Theory("tcp_scan(SOURCE,DESTINATION):-connessione_tcp(SOURCE,DESTINATION,A,B),connessione_tcp(SOURCE,DESTINATION,C,D),connessione_tcp(SOURCE,DESTINATION,E,F)," +
 					"A \\== B,A \\== C,A \\== D,B \\== C,C \\== E, A \\== E,B \\== F.");
-			System.out.println(rule);
+			
+			String generated_rule = createStringTcpScan(n);
+			System.out.println("generated rule " + generated_rule);
+			System.out.println("rule " +rule);
 			return rule;
 		} catch (InvalidTheoryException e) {
 			// TODO Auto-generated catch block

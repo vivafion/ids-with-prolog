@@ -43,7 +43,7 @@ public void readFile(String file){
 		int n = jpcap.received_packets;
 		System.out.println("pacchetti ricevuti " + n);
 		jpcap.processPacket(-1, this);
-		analyzer.query();
+		//analyzer.query();
 		
 		
 	} catch (IOException e) {
