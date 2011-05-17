@@ -33,7 +33,7 @@ public class Main {
 		//Prolog engine = new Prolog();
 		
 		try { 
-			Theory kb = new Theory(new FileInputStream("/home/p1mps/ids-with-prolog/ids/kb.pl")); 
+			Theory kb = new Theory(new FileInputStream("C:/Documents and Settings/TeX/Documenti/IA/ids-with-prolog/ids/kb.pl")); 
 			engine.setTheory(kb);
 		}
 		catch (Exception e) {
@@ -49,7 +49,7 @@ public class Main {
 		
 		if(args.length <= 2){
 			System.out.println("Usage: kb.pl n_connections file.pcap|sniffer");
-			System.exit(0);
+		//	System.exit(0);
 		}
 		
 
@@ -77,20 +77,20 @@ public class Main {
 		
 		//sniffer.readFile("/home/p1mps/ids-with-prolog/ids/true_scan.pcap");
 		//analyzer.query();
-		//analyzer.initializeKB("/home/p1mps/ids-with-prolog/ids/true_scan.pcap",10);
-		analyzer.initializeKB(args[0],Integer.parseInt(args[1]));
-		//sniffer.readFile("/home/p1mps/ids-with-prolog/ids/true_scan.pcap");
+		analyzer.initializeKB("C:/Documents and Settings/TeX/Documenti/IA/ids-with-prolog/ids/kb.pl",10);
+		//analyzer.initializeKB(args[0],Integer.parseInt(args[1]));
+		sniffer.readFile("C:/Documents and Settings/TeX/Documenti/IA/ids-with-prolog/ids/true_scan.pcap");
 		//RetractTimer timer = new RetractTimer(10,analyzer);
 		
 
-		
+		/*
 		if(args[2].equals("sniffer"))
 			sniffer.start();
 		else
 			sniffer.readFile(args[2]);
+		*/
 		
-		
-		//analyzer.query();
+		analyzer.query();
 	}
 
 }
