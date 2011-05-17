@@ -118,20 +118,19 @@ public class Analyzer extends Thread{
 		String n1 = "";
 		String n2 = "";
 		Integer n_less_1 = new Integer(n-1);
-		for (int i=0; i < n;i+=2){
+		for (int i=1; i < n;i+=2){
 			  n1 = "A"+(i);
 			  n2 = "A"+(i+1);
 			  Integer i_integer = new Integer(i);
 			  
 			  //System.out.println(i_integer +","+i);
-			  t2 = "connessione_tcp(X,Y,"+n1+","+n2+"),";
-			  t3 += t2;
+			  t2 += "connessione_tcp(X,Y,"+n1+","+n2+"),";
 			  
 			  for (int j=i; j < n;j++){
 				  n1 = "A"+(i);
 				  n2 = "A"+(j+1);
 				  
-				  t3 += n1+"=\\"+n2;
+				  t3 += n1+"\\="+n2;
 
 				  if(i_integer.equals(n_less_1)){
 					  
@@ -141,17 +140,13 @@ public class Analyzer extends Thread{
 					  t3 += ",";
 				    
 			  }
-			  
-			  
-			  
-			  
-			  System.out.println("t3 costruita " + t3);
-			  
+			  //System.out.println("t3 costruita " + t3);
 		} 
 		
 		
-		//System.out.println("regola generata" + t3);
-		t1 += t3;
+		
+		t1 += t2+t3;
+		System.out.println("regola generata: " + t1 + "-");
 		return t1;
 		
 		
@@ -163,12 +158,14 @@ public class Analyzer extends Thread{
 	public Theory createRuleTcpScan(int n){
 		
 		try {
-			Theory rule = new Theory("tcp_scan(SOURCE,DESTINATION):-connessione_tcp(SOURCE,DESTINATION,A,B),connessione_tcp(SOURCE,DESTINATION,C,D),connessione_tcp(SOURCE,DESTINATION,E,F)," +
+			/*Theory rule = new Theory("tcp_scan(SOURCE,DESTINATION):-connessione_tcp(SOURCE,DESTINATION,A,B),connessione_tcp(SOURCE,DESTINATION,C,D),connessione_tcp(SOURCE,DESTINATION,E,F)," +
 					"A \\== B,A \\== C,A \\== D,B \\== C,C \\== E, A \\== E,B \\== F.");
-			
+			*/
 			String generated_rule = createStringTcpScan(n);
 			System.out.println("generated rule " + generated_rule);
-			System.out.println("rule " +rule);
+			//System.out.println("rule " +rule);
+			Theory rule = new Theory(generated_rule);
+			System.out.println("ok");
 			return rule;
 		} catch (InvalidTheoryException e) {
 			// TODO Auto-generated catch block
@@ -192,8 +189,9 @@ public class Analyzer extends Thread{
 		try { 
 			Theory kb = new Theory(new FileInputStream(file));
 			Theory dynamic_rule = createRuleTcpScan(n);
-			kb.append(dynamic_rule);
 			engine.setTheory(kb);
+			System.out.println(dynamic_rule.toString());
+			engine.addTheory(dynamic_rule);
 			
 		}
 		catch (Exception e) {
