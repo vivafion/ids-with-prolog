@@ -92,20 +92,21 @@ public class Analyzer extends Thread{
 	public synchronized void assertPacket(Packet p){
 		
 		if(p instanceof TCPPacket){
-		
-		TCPPacket tcp_packet = (TCPPacket)p;
-		packets.add(tcp_packet);
-		//System.out.println(tcp_packet);
-		Term packet = createPacket(tcp_packet);
-	    System.out.println(packet);
-	    Term assert_query = new Struct("assert",packet );
-    	try{
-    	SolveInfo solve = engine.solve(assert_query);
-    	Term solution = solve.getSolution();
-    	System.out.println(solution);
-    	}
-    	catch(Exception e){}
-    	
+			
+			TCPPacket tcp_packet = (TCPPacket)p;
+			packets.add(tcp_packet);
+			//System.out.println(tcp_packet);
+			Term packet = createPacket(tcp_packet);
+		    System.out.println(packet);
+		    Term assert_query = new Struct("assert",packet );
+	
+		    try{
+		    	SolveInfo solve = engine.solve(assert_query);
+		    	Term solution = solve.getSolution();
+		    	System.out.println(solution);
+	    	}
+	    	catch(Exception e){}
+	    	
 		}
 	}
 	
@@ -118,12 +119,13 @@ public class Analyzer extends Thread{
 		String n1 = "";
 		String n2 = "";
 		Integer n_less_1 = new Integer(n-1);
-		for (int i=1; i < n;i+=2){
+		for (int i=1; i < n;i++){
 			  n1 = "A"+(i);
 			  n2 = "A"+(i+1);
 			  Integer i_integer = new Integer(i);
 			  
 			  //System.out.println(i_integer +","+i);
+			  if (i%2==1)
 			  t2 += "connessione_tcp(X,Y,"+n1+","+n2+"),";
 			  
 			  for (int j=i; j < n;j++){

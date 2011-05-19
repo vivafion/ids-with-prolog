@@ -11,27 +11,6 @@ public class Main {
 	/* inizializza ambiente JPL */
 	public static void init(Prolog engine){
 		
-/*		JPL.init();
-
-		Term consult_arg[] = { 
-				new Atom( "kb.pl" ) 
-			};
-			Query consult_query = 
-				new Query( 
-					"consult", 
-					consult_arg );
-
-			
-			boolean consulted = consult_query.query();
-			
-			if ( !consulted ){
-				System.err.println( "Consult failed" );
-				System.exit( 1 );
-			}
-*/
-	
-		//Prolog engine = new Prolog();
-		
 		try { 
 			Theory kb = new Theory(new FileInputStream("C:/Documents and Settings/TeX/Documenti/IA/ids-with-prolog/ids/kb.pl")); 
 			engine.setTheory(kb);
@@ -60,12 +39,6 @@ public class Main {
 		Sniffer sniffer = new Sniffer();
 		
 		init(engine);
-		/* non serve +
-		Blackboard blackBoard = new Blackboard(); 
-		analyzer.setBlackboard(blackBoard);
-		sniffer.setBlackboard(blackBoard);
-		*/
-		//sniffer.setAnalyzer(analyzer);
 		
 		/* cattura pacchettti "live" */
 		/*
@@ -75,8 +48,6 @@ public class Main {
 		
 		/* legge file pacchetti catturati */
 		
-		//sniffer.readFile("/home/p1mps/ids-with-prolog/ids/true_scan.pcap");
-		//analyzer.query();
 		analyzer.initializeKB("C:/Documents and Settings/TeX/Documenti/IA/ids-with-prolog/ids/kb.pl",10);
 		//analyzer.initializeKB(args[0],Integer.parseInt(args[1]));
 		sniffer.readFile("C:/Documents and Settings/TeX/Documenti/IA/ids-with-prolog/ids/true_scan.pcap");
