@@ -40,9 +40,11 @@ public void readFile(String file){
 	try {
 		System.out.println("leggo pacchetti");
 		JpcapCaptor jpcap = JpcapCaptor.openFile(file);
+		jpcap.setFilter("tcp", true);
 		int n = jpcap.received_packets;
 		System.out.println("pacchetti ricevuti " + n);
 		jpcap.processPacket(-1, this);
+		
 		//analyzer.query();
 		
 		
@@ -59,11 +61,13 @@ public void readFile(String file){
  
 public void receivePacket(Packet packet) {
 	
+	
+	//System.out.println(packet);
 	/* asserisce pacchetto come fatto */
 	analyzer.assertPacket(packet);
 	/* esegue query tcp_scan(X,Y) */
 	analyzer.query();
-		
+	
 	
 }
 	
