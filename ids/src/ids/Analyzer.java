@@ -97,22 +97,74 @@ public class Analyzer extends Thread{
 			packets.add(tcp_packet);
 			//System.out.println(tcp_packet);
 			Term packet = createPacket(tcp_packet);
-		    System.out.println(packet);
+		    //System.out.println(packet);
 		    Term assert_query = new Struct("assert",packet );
 	
 		    try{
 		    	SolveInfo solve = engine.solve(assert_query);
 		    	Term solution = solve.getSolution();
-		    	System.out.println(solution);
+		    	System.out.println("assert " + solution);
 	    	}
-	    	catch(Exception e){}
+	    	catch(Exception e){
+	    		e.printStackTrace();
+	    		
+	    	}
 	    	
 		}
 	}
 	
-	
-	public String createStringTcpScan(Integer n){
+	/* la stringa indica porta_chiusa o connessione_tcp */
+	public String createStringTcpScan(Integer n,String s){
 		
+		
+		String t1 = "tcp_scan(X,Y):- ";
+		String t2 = "";
+		String n1 = "";
+		String n2 = "";
+		
+		for (int i = 1; i < n; i+=2) {
+			
+			n1 = "A"+(i);
+			n2 = "A"+(i+1);
+		
+			if (i%2==1){
+			  t2 += s + "(X,Y,"+n1+","+n2+"),";
+			  t2 += n1 + "\\=" + n2 + ",";
+			  
+			  
+			}
+			
+			
+			
+		}
+		
+		for(int i = 2; i < n; i+=2){
+			
+			for(int j = i; j < n; j+=2){
+			n1 = "A"+(i);
+			n2 = "A"+(j+2);
+			
+			t2 += n1 + "\\=" + n2;
+			Integer i_integer = new Integer(j);
+			
+			if(i_integer.equals(new Integer(i)) && i!=2)
+				  t2 += ".";
+			  else
+				  t2+=",";
+			
+			}
+			
+		}
+		
+		
+		t1 += t2;
+		
+		System.out.println(t1);
+		
+		return t1;
+		
+		
+		/*
 		String t1 = "tcp_scan(X,Y):- ";
 		String t2 = "";
 		String t3 = "";
@@ -151,30 +203,35 @@ public class Analyzer extends Thread{
 		System.out.println("regola generata: " + t1 + "-");
 		return t1;
 		
-		
+		*/
 		
 	}
 	
 	
 	
-	public Theory createRuleTcpScan(int n){
+	public void createRuleTcpScan(int n){
 		
 		try {
 			/*Theory rule = new Theory("tcp_scan(SOURCE,DESTINATION):-connessione_tcp(SOURCE,DESTINATION,A,B),connessione_tcp(SOURCE,DESTINATION,C,D),connessione_tcp(SOURCE,DESTINATION,E,F)," +
 					"A \\== B,A \\== C,A \\== D,B \\== C,C \\== E, A \\== E,B \\== F.");
 			*/
-			String generated_rule = createStringTcpScan(n);
+			String generated_rule = createStringTcpScan(n,"porta_chiusa");
+			String generated_rule2 = createStringTcpScan(n,"connessione_tcp");
 			System.out.println("generated rule " + generated_rule);
+			System.out.println("generated rule2 " + generated_rule2);
 			//System.out.println("rule " +rule);
 			Theory rule = new Theory(generated_rule);
+			Theory rule2 = new Theory(generated_rule2);
+			engine.addTheory(rule);
+			engine.addTheory(rule2);
 			System.out.println("ok");
-			return rule;
+			
 		} catch (InvalidTheoryException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 		}
 		
-		return null;
+		
 		
 		
 		
@@ -190,10 +247,10 @@ public class Analyzer extends Thread{
 		
 		try { 
 			Theory kb = new Theory(new FileInputStream(file));
-			Theory dynamic_rule = createRuleTcpScan(n);
 			engine.setTheory(kb);
-			System.out.println(dynamic_rule.toString());
-			engine.addTheory(dynamic_rule);
+			createRuleTcpScan(n);
+			//System.out.println(dynamic_rule.toString());
+			
 			
 		}
 		catch (Exception e) {
@@ -235,7 +292,7 @@ public class Analyzer extends Thread{
 	        	System.exit(0);
 	        	}
 	        catch(Exception e){
-	        	//e.printStackTrace();
+	        	e.printStackTrace();
 	        	
 	        	
 	        }

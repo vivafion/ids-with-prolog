@@ -38,7 +38,8 @@ public class Main {
 		
 		Sniffer sniffer = new Sniffer();
 		
-		init(engine);
+		//init(engine);
+		sniffer.setAnalyzer(analyzer);
 		
 		/* cattura pacchettti "live" */
 		/*
@@ -48,11 +49,11 @@ public class Main {
 		
 		/* legge file pacchetti catturati */
 		
-		analyzer.initializeKB("C:/Documents and Settings/TeX/Documenti/IA/ids-with-prolog/ids/kb.pl",10);
+		analyzer.initializeKB("/home/p1mps/ids-with-prolog/ids/kb.pl",6);
 		//analyzer.initializeKB(args[0],Integer.parseInt(args[1]));
-		sniffer.readFile("C:/Documents and Settings/TeX/Documenti/IA/ids-with-prolog/ids/true_scan.pcap");
+		//sniffer.readFile("/home/p1mps/ids-with-prolog/ids/scan_nmap2.pcap");
 		//RetractTimer timer = new RetractTimer(10,analyzer);
-		
+		//sniffer.start();
 
 		/*
 		if(args[2].equals("sniffer"))
